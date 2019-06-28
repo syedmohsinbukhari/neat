@@ -22,10 +22,11 @@ class Individual():
     genes = []
     genes_size = 5
 
-    def __int__(self):
+    def __init__(self):
         """
         """
-        self.genes = np.random.randint(2,size=genes_size)
+        self.genes = np.random.randint(2,size=self.genes_size)
+
 
     def get_fitness_score(self):
         """ Return fitness score """
@@ -53,13 +54,19 @@ class Population():
                             for i in range(self.population_size)]
 
 
+    def get_fittest_score(self):
+        """
+        Return score of the fittest individual
+        """
+        return self.get_fittest(n=1)[0].get_fitness_score()
+
     def get_fittest(self,n=2):
         """
         Return top n fittest individuals
         """
         max_val = -1
         top_n = [max_val]*n
-        top_individuals = [Individual() for i in range(n)]
+        top_individuals = [None]*n
 
         for individual in self.individuals:
             score = individual.get_fitness_score()
@@ -86,18 +93,22 @@ class Population():
         """
         min_val = 100# assumes gene size 5
         min_id = None
-        for idx, individual in enumerate(self.individuals):
-            score = individual.get_fitness_score()
 
+        for idx, individual in enumerate(self.individuals):
+
+            score = individual.get_fitness_score()
             if score < min_val:
                 min_val = score
                 min_id = idx
+
 
         return min_id
 
 
 class Evolution():
-
+    """
+    Evolution process
+    """
     population = None
     generation_count = 0
     the_best = None
@@ -108,7 +119,7 @@ class Evolution():
         """
         self.population = Population(size=10)
 
-        while (self.population.fittest < 5):
+        while (self.population.get_fittest_score() < 5):
             self.generation_count += 1
 
             self.selection()
@@ -118,7 +129,11 @@ class Evolution():
                 self.mutation()
 
             self.generation_change()
-            print('Generation#{}, fittest score{}'.format(self.generation_count,self.get_fittest(n=1)[0]))
+            print('Generation#{}, fittest score {}, genes {}'\
+                        .format(self.generation_count,\
+                        self.population.get_fittest_score(),
+                        self.population.get_fittest(n=1)[0].genes
+                        ))
 
 
     def selection(self):
@@ -135,8 +150,6 @@ class Evolution():
         """
         crossover_point = np.random.randint(5)
         #swap
-        print(crossover_point)
-        print(self.the_best.genes)
         self.the_best.genes[crossover_point],\
         self.the_second_best.genes[crossover_point] = \
         self.the_second_best.genes[crossover_point],\
@@ -148,7 +161,6 @@ class Evolution():
         """
         mutation_point = np.random.randint(5)
         self.the_best.genes[mutation_point] = 1^self.the_best.genes[mutation_point]
-
         mutation_point = np.random.randint(5)
         self.the_second_best.genes[mutation_point] = 1^self.the_second_best.genes[mutation_point]
 
@@ -157,12 +169,12 @@ class Evolution():
         Replace least fit with the best child
         """
         best_child = None
-        if the_best.get_fitness_score() > self.the_second_best.get_fitness_score():
-            best_child = the_best
+        if self.the_best.get_fitness_score() >= self.the_second_best.get_fitness_score():
+            best_child = self.the_best
         else:
-            best_child = the_second_best
+            best_child = self.the_second_best
 
-        self.population[get_least_fit_index] = best_child
+        self.population.individuals[self.population.get_least_fit_index()] = best_child
 
 if __name__ == "__main__":
     Evolution()
