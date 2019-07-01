@@ -5,7 +5,7 @@ setup(
     version='0.1',
     author='elcid, bazarovay',
     author_email='syedmohsinbukhari@googlemail.com, bazarovay@github.com',
-    maintainer='Syed Mohsin Bukhari, Rafid Saad',
+    maintainer='ElCid, Bazarovay',
     maintainer_email='syedmohsinbukhari@googlemail.com, bazarovay@github.com',
     url='https://github.com/syedmohsinbukhari/neat',
     license="MIT",
