@@ -34,6 +34,5 @@ Evolving Neural Networks through Augmenting Topologies by Kenneth O. Stanley and
 
 
 ### Contributors
-Syed Mohsin Bukhari
-
-Bazarovay
+[Syed Mohsin Bukhari](https://github.com/syedmohsinbukhari)<br>
+[Bazarovay](https://github.com/bazarovay)
