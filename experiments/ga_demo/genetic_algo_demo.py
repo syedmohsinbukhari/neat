@@ -22,9 +22,16 @@ class Individual():
     genes = []
     genes_size = 5
 
-    def __init__(self):
+    def __init__(self,size=None):
         """
+        Initialize individual with gene size. Default size is 5
         """
+        if size:
+            if size < 0:
+                raise ValueError("Individual gene size can't be less than 0.\
+                                Size provided was {}".format(size))
+            self.genes_size = size
+
         self.genes = np.random.randint(2,size=self.genes_size)
 
 
