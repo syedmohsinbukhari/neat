@@ -12,7 +12,7 @@ Evolving Neural Networks through Augmenting Topologies by Kenneth O. Stanley and
 
 **Resources**
 - [Paper](http://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf)
-- [Introductory video] (https://www.youtube.com/watch?v=VMQOa4-rVxE) _Other videos are very relevant_
+- [Introductory video](https://www.youtube.com/watch?v=VMQOa4-rVxE) _Other videos are very relevant_
 - [An Introduction To Genetic Algorithm](https://www.whitman.edu/Documents/Academics/Mathematics/2014/carrjk.pdf)
 - [Structuring Python Projects](https://docs.python-guide.org/writing/structure/)
 - [Neat Python](https://github.com/CodeReclaimers/neat-python) for reference
@@ -20,8 +20,8 @@ Evolving Neural Networks through Augmenting Topologies by Kenneth O. Stanley and
 **To Do**
 
 - [x] Genetic algos
-- [] Neat paper discussion
-- [] Directory structure
+- [ ] Neat paper discussion
+- [ ] Directory structure
 
 
 **Genetic Algorithms 4 Steps**
