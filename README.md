@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/syedmohsinbukhari/neat.png?)](https://travis-ci.org/syedmohsinbukhari/neat)
-
+[![Coverage Status](https://coveralls.io/repos/github/syedmohsinbukhari/neat/badge.svg?branch=develop)](https://coveralls.io/github/syedmohsinbukhari/neat)
 
 # NEAT (NeuroEvolution of Augmenting Topologies)
 Implementation of NEAT in Python3.
