@@ -23,7 +23,7 @@ Evolving Neural Networks through Augmenting Topologies by Kenneth O. Stanley and
 **To Do**
 
 - [x] Genetic algos
-- [ ] Neat paper discussion
+- [x] Neat paper discussion
 - [ ] Directory structure
 
 
