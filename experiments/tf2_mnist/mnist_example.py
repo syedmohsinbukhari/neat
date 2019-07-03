@@ -40,18 +40,19 @@ test_ds = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(32)
 
 # Build the tf.keras model using the Keras model subclassing API:
 class MyModel(Model):
-  def __init__(self):
-    super(MyModel, self).__init__()
-    self.conv1 = Conv2D(32, 3, activation='relu')
-    self.flatten = Flatten()
-    self.d1 = Dense(128, activation='relu')
-    self.d2 = Dense(10, activation='softmax')
+    def __init__(self):
+        super(MyModel, self).__init__()
+        self.conv1 = Conv2D(32, 3, activation='relu')
+        self.flatten = Flatten()
+        self.d1 = Dense(128, activation='relu')
+        self.d2 = Dense(10, activation='softmax')
 
-  def call(self, x):
-    x = self.conv1(x)
-    x = self.flatten(x)
-    x = self.d1(x)
-    return self.d2(x)
+    def call(self, x):
+        x = self.conv1(x)
+        x = self.flatten(x)
+        x = self.d1(x)
+        return self.d2(x)
+
 
 model = MyModel()
 
@@ -73,40 +74,39 @@ test_accuracy = tf.keras.metrics.SparseCategoricalAccuracy(name='test_accuracy')
 # Use tf.GradientTape to train the model
 @tf.function
 def train_step(images, labels):
-  with tf.GradientTape() as tape:
-    predictions = model(images)
-    loss = loss_object(labels, predictions)
-  gradients = tape.gradient(loss, model.trainable_variables)
-  optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+    with tf.GradientTape() as tape:
+        predictions = model(images)
+        loss = loss_object(labels, predictions)
+    gradients = tape.gradient(loss, model.trainable_variables)
+    optimizer.apply_gradients(zip(gradients, model.trainable_variables))
 
-  train_loss(loss)
-  train_accuracy(labels, predictions)
+    train_loss(loss)
+    train_accuracy(labels, predictions)
 
 
 # Test the model
 @tf.function
 def test_step(images, labels):
-  predictions = model(images)
-  t_loss = loss_object(labels, predictions)
+    predictions = model(images)
+    t_loss = loss_object(labels, predictions)
 
-  test_loss(t_loss)
-  test_accuracy(labels, predictions)
+    test_loss(t_loss)
+    test_accuracy(labels, predictions)
 
 
 # Finally run the code
 EPOCHS = 5
 
 for epoch in range(EPOCHS):
-  for images, labels in train_ds:
-    train_step(images, labels)
+    for images, labels in train_ds:
+        train_step(images, labels)
 
-  for test_images, test_labels in test_ds:
-    test_step(test_images, test_labels)
+    for test_images, test_labels in test_ds:
+        test_step(test_images, test_labels)
 
-  template = 'Epoch {}, Loss: {}, Accuracy: {}, Test Loss: {}, Test Accuracy: {}'
-  print (template.format(epoch+1,
-                         train_loss.result(),
-                         train_accuracy.result()*100,
-                         test_loss.result(),
-                         test_accuracy.result()*100))
-
+    template = 'Epoch {}, Loss: {}, Accuracy: {}, Test Loss: {}, Test Accuracy: {}'
+    print(template.format(epoch+1,
+                          train_loss.result(),
+                          train_accuracy.result()*100,
+                          test_loss.result(),
+                          test_accuracy.result()*100))
