@@ -7,7 +7,7 @@ http://neuralnetworksanddeeplearning.com/chap2.html
 """
 
 # import numpy as np
-import math
+from numpy import exp
 
 
 class ActivationFunction:
@@ -34,7 +34,7 @@ class Sigmoid(ActivationFunction):
             return 0.0
 
         try:
-            return 1.0 / (1.0 + math.exp(-1.0*x))
+            return 1.0 / (1.0 + exp(-1.0*x))
         except OverflowError:
             return 0.0
         finally:
