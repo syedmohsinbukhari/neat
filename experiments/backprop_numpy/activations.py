@@ -1,12 +1,12 @@
 """
-Description: Numpy implementation of backprop and gradient descent
+Description: Numpy implementation of activation functions and
+             and their derivatives
 author: syedmohsinbukhari@googlemail.com
 
 Reference
 http://neuralnetworksanddeeplearning.com/chap2.html
 """
 
-# import numpy as np
 from numpy import exp
 
 
@@ -28,17 +28,7 @@ class Sigmoid(ActivationFunction):
 
     @staticmethod
     def forward(x):
-        if x > 100.0:
-            return 1.0
-        elif x < -100.0:
-            return 0.0
-
-        try:
-            return 1.0 / (1.0 + exp(-1.0*x))
-        except OverflowError:
-            return 0.0
-        finally:
-            pass
+        return 1.0 / (1.0 + exp(-1.0*x))
 
     @staticmethod
     def derivative(x):
@@ -61,6 +51,3 @@ class Relu(ActivationFunction):
         else:
             return 0
 
-
-if __name__ == '__main__':
-    print(Sigmoid.derivative(-1))
