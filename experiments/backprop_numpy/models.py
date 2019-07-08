@@ -38,7 +38,7 @@ class FeedForwardModel(SequentialModel):
 
         x_n = x
         for layer in self.layers:
-            x_n_1 = np.add(np.dot(layer[0], x_n), layer[1])
+            x_n_1 = Sigmoid.forward(np.add(np.dot(layer[0], x_n), layer[1]))
             x_n = x_n_1
 
         return x_n
