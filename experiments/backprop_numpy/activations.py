@@ -32,22 +32,22 @@ class Sigmoid(ActivationFunction):
 
     @staticmethod
     def derivative(x):
-        return Sigmoid.forward(x) * (1 - Sigmoid.forward(x))
+        return Sigmoid.forward(x) * (1.0 - Sigmoid.forward(x))
 
 
 class Relu(ActivationFunction):
 
     @staticmethod
     def forward(x):
-        if x > 0:
+        if x > 0.0:
             return x
         else:
-            return 0
+            return 0.0
 
     @staticmethod
     def derivative(x):
-        if x > 0:
-            return 1
+        if x > 0.0:
+            return 1.0
         else:
-            return 0
+            return 0.0
 
