@@ -59,8 +59,8 @@ class FeedForwardModel(SequentialModel):
             print("Exiting because no forward pass with grads")
             return
 
-        delta_n = loss_grad
-        self.layer_grads = []  # (dx_n1/dx_n, dx_n1/dw_n, dx_n1/db_n)
+        delta_arr = [loss_grad]
+        self.layer_grads = []  # (delta_n1, delta_w_n, delta_b_n)
 
         for i in range(len(self.layer_x_n1)-1, 0, -1):
             x_n1 = self.layer_x_n1[i]
@@ -68,22 +68,17 @@ class FeedForwardModel(SequentialModel):
             z = self.layer_z[i-1]
             w_n, _ = self.layers[i-1]
 
-            # print(f'Ones vector: {np.ones((x_n1.shape[0], 1), dtype=np.float)}')
-            # print(f'x_n.T: {x_n.T}')
-            print(f'w_n.T:\n{w_n.T}', end='\n\n')
-            print(f'np.dot(w_n.T, delta_n):\n{np.dot(w_n.T, delta_n)}', end='\n\n')
-            print(f'Sigmoid.derivative(z):\n{Sigmoid.derivative(z)}', end='\n\n')
-            delta_n = np.multiply(Sigmoid.derivative(z), np.dot(w_n.T, delta_n))
-            print(f'delta_n:\n{delta_n}', end='\n\n')
-            # dx_n1_dx_n = np.dot(w_n.T, Sigmoid.derivative(z))
-            # dx_n1_dw_n = np.dot(
-            #     Sigmoid.derivative(z),
-            #     np.outer(np.ones((x_n1.shape[0], 1), dtype=np.float), x_n.T)
-            # )
-            # dx_n1_db_n = Sigmoid.derivative(z)
-            #
-            # self.layer_grads.append((dx_n1_dx_n, dx_n1_dw_n, dx_n1_db_n))
+            delta_n1 = delta_arr[-1]
+            delta_n = np.dot(w_n.T, np.multiply(Sigmoid.derivative(z), delta_n1))
+            delta_arr.append(delta_n)
 
+            delta_w_n = np.multiply(
+                np.outer(np.ones((x_n1.shape[0], 1), dtype=np.float), x_n.T),
+                np.multiply(Sigmoid.derivative(z), delta_n1)
+            )
+            delta_b_n = np.multiply(Sigmoid.derivative(z), delta_n1)
+
+            self.layer_grads.append((delta_w_n, delta_b_n))
         return
 
 
