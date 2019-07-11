@@ -26,6 +26,7 @@ Evolving Neural Networks through Augmenting Topologies by Kenneth O. Stanley and
 - [x] Neat paper discussion
 - [] Read python-neat
 - [ ] Directory structure
+- [] Add Backprop implementation by 7/13/19
 
 
 **Genetic Algorithms 4 Steps**
