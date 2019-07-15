@@ -13,6 +13,6 @@ setup(
     long_description='NeuroEvolution of Augmenting Topologies (NEAT), which at the time of publication ' +
                      'outperformed the best fixed-topology method on a challenging ' + 
                      'benchmark reinforcement learning task.',
-    packages=['neat'],
+    packages=['neat', 'experiments', 'experiments/backprop_numpy'],
     classifiers=[]
 )
