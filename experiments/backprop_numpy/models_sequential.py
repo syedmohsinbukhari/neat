@@ -8,27 +8,30 @@ http://neuralnetworksanddeeplearning.com/chap2.html
 """
 
 import numpy as np
-from activations import Sigmoid
+from experiments.backprop_numpy.activations import Sigmoid
+from experiments.backprop_numpy.losses import Losses
 
 
 class SequentialModel:
     def __init__(self):
-        pass
+        self.layers = []
+        self.layer_grads = []
 
     def forward(self, x, with_grads=False):
         pass
 
-    def backward(self, loss_grad):
+    def backward(self, loss_obj):
+        pass
+
+    def clear_grads(self):
         pass
 
 
 class FeedForwardModel(SequentialModel):
     def __init__(self, neuron_config):
         super().__init__()
-        self.layers = []
         self.layer_z = []
         self.layer_x_n1 = []
-        self.layer_grads = []
 
         for i in range(len(neuron_config)-1):
             w = np.zeros((neuron_config[i+1], neuron_config[i]), dtype=np.float)
@@ -54,10 +57,12 @@ class FeedForwardModel(SequentialModel):
 
         return x_n
 
-    def backward(self, loss_grad):
-        if len(self.layer_x_n1) <= 1:
-            print("Exiting because no forward pass with grads")
-            return
+    def backward(self, loss_obj):
+        assert isinstance(loss_obj, Losses)
+        assert len(self.layer_x_n1) > 1, "Exiting because no forward pass with grads"
+        assert len(self.layer_grads) < 1, "Exiting because previous gradients are not cleared"
+
+        loss_grad = loss_obj.backward()
 
         delta_arr = [loss_grad]
         self.layer_grads = []  # (delta_n1, delta_w_n, delta_b_n)
@@ -79,7 +84,13 @@ class FeedForwardModel(SequentialModel):
             delta_b_n = np.multiply(Sigmoid.derivative(z), delta_n1)
 
             self.layer_grads.append((delta_w_n, delta_b_n))
+
+        self.layer_grads = self.layer_grads[::-1]
+
         return
+
+    def clear_grads(self):
+        self.layer_grads = []
 
 
 if __name__ == '__main__':
