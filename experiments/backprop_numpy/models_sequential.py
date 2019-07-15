@@ -8,8 +8,8 @@ http://neuralnetworksanddeeplearning.com/chap2.html
 """
 
 import numpy as np
-from experiments.backprop_numpy.activations import Sigmoid
-from experiments.backprop_numpy.losses import Losses, SSELoss
+from .activations import Sigmoid
+from .losses import Losses
 
 
 class SequentialModel:
@@ -92,17 +92,3 @@ class FeedForwardModel(SequentialModel):
 
     def clear_grads(self):
         self.layer_grads = []
-
-
-if __name__ == '__main__':
-    ffm = FeedForwardModel([3, 2, 1])
-
-    nn_out = ffm.forward(np.array([[1.0], [2.0], [3.0]]), with_grads=True)
-    print(f"Neural Network Output: {nn_out}")
-
-    loss_obj = SSELoss()
-    loss_value = loss_obj.forward(np.array([[1.0]]), nn_out)
-    print(f"Neural Network Loss")
-
-    ffm.backward(loss_obj)
-    print(f"Neural Network Gradients: {ffm.layer_grads}")

@@ -6,7 +6,7 @@ author: syedmohsinbukhari@googlemail.com
 
 import numpy as np
 
-from experiments.backprop_numpy.models_sequential import SequentialModel
+from .models_sequential import SequentialModel
 
 
 class Optimizers:

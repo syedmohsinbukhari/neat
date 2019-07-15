@@ -6,10 +6,10 @@ author: syedmohsinbukhari@googlemail.com
 import pytest
 
 from numpy import exp, array, shape
-from experiments.backprop_numpy.activations import Relu, Sigmoid
-from experiments.backprop_numpy.losses import SSELoss
-from experiments.backprop_numpy.optimizers import SGD
-from experiments.backprop_numpy.models_sequential import FeedForwardModel
+from .activations import Relu, Sigmoid
+from .losses import SSELoss
+from .optimizers import SGD
+from .models_sequential import FeedForwardModel
 
 
 class TestActivations:
