@@ -9,13 +9,14 @@ http://neuralnetworksanddeeplearning.com/chap2.html
 
 import numpy as np
 from experiments.backprop_numpy.activations import Sigmoid
-from experiments.backprop_numpy.losses import Losses
+from experiments.backprop_numpy.losses import Losses, SSELoss
 
 
 class SequentialModel:
-    def __init__(self):
+    def __init__(self, neuron_config):
         self.layers = []
         self.layer_grads = []
+        self.neuron_config = neuron_config
 
     def forward(self, x, with_grads=False):
         pass
@@ -29,7 +30,7 @@ class SequentialModel:
 
 class FeedForwardModel(SequentialModel):
     def __init__(self, neuron_config):
-        super().__init__()
+        super().__init__(neuron_config)
         self.layer_z = []
         self.layer_x_n1 = []
 
@@ -99,5 +100,9 @@ if __name__ == '__main__':
     nn_out = ffm.forward(np.array([[1.0], [2.0], [3.0]]), with_grads=True)
     print(f"Neural Network Output: {nn_out}")
 
-    ffm.backward(np.array([[0.1]]))
+    loss_obj = SSELoss()
+    loss_value = loss_obj.forward(np.array([[1.0]]), nn_out)
+    print(f"Neural Network Loss")
+
+    ffm.backward(loss_obj)
     print(f"Neural Network Gradients: {ffm.layer_grads}")

@@ -5,7 +5,7 @@ author: syedmohsinbukhari@googlemail.com
 
 import pytest
 
-from numpy import exp, array
+from numpy import exp, array, shape
 from experiments.backprop_numpy.activations import Relu, Sigmoid
 from experiments.backprop_numpy.losses import SSELoss
 from experiments.backprop_numpy.optimizers import SGD
@@ -83,3 +83,20 @@ class TestOptimizers:
         self.optimizer.apply_grads()
 
         assert len(self.nnm.layers) == len(self.nnm.layer_grads)
+
+
+class TestModels:
+    nnm = FeedForwardModel([3, 2, 1])
+    loss_obj = SSELoss()
+    optimizer = SGD(0.01, nnm)
+
+    def test_feed_forward_forward(self):
+        nn_out = self.nnm.forward(array([[1.0], [1.0], [1.0]]))
+        assert shape(nn_out) == (self.nnm.neuron_config[-1], 1), "Gradients are not populated"
+
+    def test_feed_forward_backward(self):
+        nn_out = self.nnm.forward(array([[1.0], [1.0], [1.0]]), with_grads=True)
+        _ = self.loss_obj.forward(array([[1.0]]), nn_out)
+        self.nnm.backward(self.loss_obj)
+
+        assert len(self.nnm.layer_grads) > 0, "Gradients are not populated"
