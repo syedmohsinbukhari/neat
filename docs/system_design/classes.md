@@ -25,9 +25,6 @@
 ### Species Class
 #### Attributes
 - Genome Objects Array
-#### Methods
-- Compute Fitness
-- Get Fit Genomes
 ---
 ### Mutation Class
 #### Methods
@@ -45,6 +42,11 @@
 ### Innovation Class
 #### Methods
 - Generate Innovation Number
+---
+### Selection Class
+#### Methods
+- Compute Fitness
+- Select Fit Genomes
 ---
 ### Helper Class
 #### Methods
