@@ -14,23 +14,33 @@ class Network:
         """
         create layers and bias
         """
-        self.layers = [Layer(2, is_input=True), Layer(2), Layer(1), Layer(1)]
-        self.biases = [np.random.randn(y.neurons, 1) for y in layers if not y.input]
-        self.weights = [(y.neurons, x.neurons) for x, y in zip(layers[:-1], layers[1:])]
+        self.layers = [Layer(2, is_input=True), Layer(3), Layer(1)]
+        self.biases = [np.random.randn(y.neurons, 1) for y in self.layers if not y.input]
+        # connection Nkj
+        # weights => k by j matrix
+        self.weights = [np.random.randn(k.neurons, j.neurons)
+                        for j, k in zip(self.layers[:-1], self.layers[1:])]
 
-    def feed_forward(self, input):
+        self.activation_list = []
+
+        self.inputs = []
+
+    def set_input(self, input):
+        self.inputs = input
+
+    def feed_forward(self, activation):
         """
         Feed forward go over all layers
         Args:
-            a: activation of the previous layer
+            activation: activation of the previous layer
 
         Returns:
             sigmoid(x*w + b)
         """
         for weight, bias in zip(self.weights, self.biases):
-            inputs = sigmoid(np.dot(weight, input) + bias)
-
-        return inputs
+            activation = sigmoid(np.dot(weight, activation) + bias)
+            self.activation_list.append(activation)
+        return activation
 
     def cost_function(self):
         """
@@ -49,7 +59,7 @@ class Network:
         Returns:
 
         """
-        for _ in range(epochs):
+        # for _ in range(epochs):
 
 def sigmoid(x):
     """
@@ -62,5 +72,37 @@ def sigmoid(x):
     """
     return 1/(1 + np.exp(-x))
 
+def sigma_derivative(z):
+    return sigmoid(z)*(1 - sigmoid(z))
 
+"""
+Network:
+1. set layers, random weight, biases
+2. set input [done]
+3. feed forward [done]
+4. Calculate output error [done]
+5. Backpropagate the error
+6. Ourput/Calc
 
+7. Optimize = use gradient and learning rate | w - eta * grad
+"""
+input_data = [[[1], [1]],[[1], [1]]]
+output_data = [[1]]
+net: Network = Network()
+net.set_input(input_data)
+single_inp = np.array(input_data[0])
+predicted_out = net.feed_forward(single_inp)
+# output error -> deltaC * deltaActivation
+# derivate for a quadratic cost function => (predicted - actual)
+# sigma_prime(last activation)
+cost_delta = np.subtract(predicted_out, output_data)
+output_error = cost_delta * sigma_derivative(net.activation_list[-1])
+print(output_error)
+# Now backprogogate the error
+# value for each weight
+# error = weight_plus_l(transpose) * error_plus_1 (hadmard) sigma_derivative_of_z_of_l
+
+delta_error = output_error
+for i in range(len(net.weights), 0, -1):
+    delta_error = np.dot(net.weights[i - 1].transpose(), delta_error) * sigma_derivative(net.activation_list[i - 2])
+    print("Output error in layer {} : input neurons {}, {}".format((i - 1), net.weights[i - 1].shape[1], delta_error))
