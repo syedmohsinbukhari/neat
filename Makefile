@@ -1,7 +1,11 @@
 init:
-    pip install -r requirements.txt
+	pip install -r requirements.txt
 
 test:
-    py.test tests
+	py.test . --cov=.
+	coveralls
 
-.PHONY: init test
+install:
+	python setup.py install
+
+.PHONY: init install test
