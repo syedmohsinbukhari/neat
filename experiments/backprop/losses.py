@@ -22,7 +22,8 @@ class MSE(Loss):
         .5 * (actual - pred)^2
         :return:
         """
-        return 0.5*(output - predicted)**2
+
+        return 0.5*np.subtract(predicted, output)**2
 
     def derivative(self, predicted, output):
         """

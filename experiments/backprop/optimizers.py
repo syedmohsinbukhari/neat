@@ -22,14 +22,20 @@ class SGD(Optimizer):
         super(SGD, self).__init__()
         self.lr = lr
 
-    def get_gradient(self):
+    def get_gradient(self, wgts, wgt_grds, biases, bias_grd):
         """
         w - eta*grad
         Add new weights
         :return:
         """
+        updated_weights = []
+        updated_biases = []
 
-        for layer_idx in range(self.weights):
-            self.weights[layer_idx] = self.weights[layer_idx] - self.lr*self.gradients[layer_idx]
+        # wgt_grds = wgt_grds[::-1]
+        # bias_grd = bias_grd[::-1]
 
-        return self.weights
+        for layer_idx in range(len(wgts)):
+            updated_weights.append(wgts[layer_idx] - self.lr*wgt_grds[layer_idx])
+            updated_biases.append(biases[layer_idx] - self.lr*bias_grd[layer_idx])
+
+        return updated_weights, updated_biases

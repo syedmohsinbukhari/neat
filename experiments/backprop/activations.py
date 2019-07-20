@@ -34,10 +34,10 @@ class Activation:
     def __init__(self, activation_name):
         _functions = globals()
         self.get = _functions[activation_name]
-        self.derive = _functions[activation_name+"_derivative"]
+        self.derivative = _functions[activation_name+"_derivative"]
 
     def get(self, x):
         return self.get(x)
 
-    def derive(self, x):
-        return self.derive(x)
+    def derivative(self, x):
+        return self.derivative(x)

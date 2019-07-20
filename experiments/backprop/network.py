@@ -1,5 +1,8 @@
 import numpy as np
-# from .losses import Quadratic
+
+from activations import Activation
+from losses import MSE
+from optimizers import SGD
 
 
 class Layer:
@@ -11,7 +14,7 @@ class Layer:
 
 class Network:
 
-    def __init__(self):
+    def __init__(self, activation=None):
         """
         create layers and bias
         """
@@ -22,12 +25,24 @@ class Network:
         self.weights = [np.random.randn(k.neurons, j.neurons)
                         for j, k in zip(self.layers[:-1], self.layers[1:])]
 
-        self.activation_list = []
+        self.activation_fn = Activation(activation)
+        self.loss_fn = MSE()
+        self.optimizer_fn = SGD(lr=.01)
 
+        self.activation_list = []
         self.inputs = []
 
-    def set_input(self, input):
-        self.inputs = input
+        self.zs = []
+        self.loss_list = []
+
+
+    def set_activation(self, activation):
+        """
+        Sets activation fn for the model
+
+        :param activation: name of the activation function
+        """
+        self.activation_fn = Activation(activation)
 
     def feed_forward(self, activation):
         """
@@ -36,22 +51,38 @@ class Network:
             activation: activation of the previous layer
 
         Returns:
-            sigmoid(x*w + b)
+            activation value
         """
         for weight, bias in zip(self.weights, self.biases):
-            activation = sigmoid(np.dot(weight, activation) + bias)
+            z = np.dot(weight, activation) + bias
+            self.zs.append(z)
+            activation = self.activation_fn.get(z)
             self.activation_list.append(activation)
         return activation
 
-    def cost_function(self):
+    def gradient_descent(self, input, output):
         """
+        Calculate the gradient descent
+        - Get weight + bias versus cost derivative
+        - Use the value to update the weights
 
-        Returns:
-
+        :return:
         """
-        pass
+        for w in self.weights:
+            print(w.shape)
 
-    def backprogagation(self, x):
+        # x = [[1], [1]]
+        delta_b, delta_w = self.backprogagation(input, output)
+
+        for w in delta_w:
+            print(w.shape)
+        print("-----------------")
+
+        self.weights, self.biases = self.optimizer_fn.get_gradient(self.weights, delta_w, self.biases, delta_b)
+        # print(self.weights, self.biases)
+
+
+    def backprogagation(self, x, output):
         """
         Backpropagate the error
         . feed forward [done]
@@ -61,37 +92,40 @@ class Network:
 
         :return:
         """
-        final_output = self.feed_forward(x)
+        # output = np.array([[1]])
+        pred_output = self.feed_forward(x)
         # output error: cost_function_derivative * change in final activation
 
-        cost_delta = derivative(np.array([[1]]), final_output)
-        output_error = cost_delta * sigmoid_derivative(self.activation_list[-1])
+        print(pred_output, output)
+        loss_val = self.loss_fn.calculate(pred_output, output)
+        # print(loss_val)
+        self.loss_list.append(loss_val)
+
+        delta_c_output = self.loss_fn.derivative(pred_output, output)
+
+        # calculating error on the last layer
+        output_error = delta_c_output * self.activation_fn.derivative(self.activation_list[-1])
 
         delta_error = output_error
 
+        delta_cw_list = []
+        delta_b_list = []
+
+        # Calculate error for each layer
         for i in range(len(self.weights), 0, -1): # going from last to the first layer
-            delta_error = np.dot(self.weights[i - 1].transpose(), delta_error) * sigmoid_derivative(self.activation_list[i - 2])
-            print(delta_error)
 
-    def sgd(self, batch_data, epochs, learning_rate):
-        """
-        - Select a minibatch from the data
-        - Use a learning rate
-        - Calculate gradient descent
-        - x - delta*delta_x
-        Returns:
+            delta_error = np.dot(self.weights[i - 1].transpose(), delta_error) * sigmoid_derivative(self.zs[i - 2])
 
-        """
-        # for _ in range(epochs):
+            delta_c_w = np.multiply(self.activation_list[i - 2], delta_error)
+            delta_bw = delta_error
 
+            delta_cw_list.append(delta_c_w)
+            delta_b_list.append(delta_bw)
 
-def derivative(predicted, output):
-    """
-    Derivative of the quadratic cost
-    predicted - output
-    :return:
-    """
-    return np.subtract(predicted, output)
+        # delta_c_w = activaction * error
+        # delta_c_b = error
+        # print(delta_c_w)
+        return delta_b_list, delta_cw_list
 
 
 def sigmoid(x):
@@ -125,13 +159,22 @@ Network:
 
 7. Optimize = use gradient and learning rate | w - eta * grad
 """
-input_data = [[[1], [1]],[[1], [1]]]
 output_data = [[1]]
-net = Network()
+net = Network(activation="sigmoid")
 
-single_inp = np.array(input_data[0])
 
-net.backprogagation(single_inp)
+input = [ [[1], [1]] ,   [[1], [2]] ]
+output = [ [[2]] , [[3]] ]
+for i in range(len(output)):
+    net.gradient_descent(input[i], output[i])
+
+loss_rate = net.loss_list
+print("-------------------------------")
+
+for i in loss_rate:
+    print(i)
+    print("....")
+
 # net.set_input(input_data)
 # predicted_out = net.feed_forward(single_inp)
 # output error -> deltaC * deltaActivation
