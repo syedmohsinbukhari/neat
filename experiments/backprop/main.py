@@ -1,4 +1,5 @@
 import numpy as np
+# from .losses import Quadratic
 
 
 class Layer:
@@ -50,6 +51,28 @@ class Network:
         """
         pass
 
+    def backprogagation(self, x):
+        """
+        Backpropagate the error
+        . feed forward [done]
+        . Calculate output error [done]
+        . Backpropagate the error
+        . Ourput/Calc
+
+        :return:
+        """
+        final_output = self.feed_forward(x)
+        # output error: cost_function_derivative * change in final activation
+
+        cost_delta = derivative(np.array([[1]]), final_output)
+        output_error = cost_delta * sigmoid_derivative(self.activation_list[-1])
+
+        delta_error = output_error
+
+        for i in range(len(self.weights), 0, -1): # going from last to the first layer
+            delta_error = np.dot(self.weights[i - 1].transpose(), delta_error) * sigmoid_derivative(self.activation_list[i - 2])
+            print(delta_error)
+
     def sgd(self, batch_data, epochs, learning_rate):
         """
         - Select a minibatch from the data
@@ -60,6 +83,16 @@ class Network:
 
         """
         # for _ in range(epochs):
+
+
+def derivative(predicted, output):
+    """
+    Derivative of the quadratic cost
+    predicted - output
+    :return:
+    """
+    return np.subtract(predicted, output)
+
 
 def sigmoid(x):
     """
@@ -72,7 +105,13 @@ def sigmoid(x):
     """
     return 1/(1 + np.exp(-x))
 
-def sigma_derivative(z):
+
+def sigmoid_derivative(z):
+    """
+    Returns the derivative of sigmoid
+    :param z:
+    :return:
+    """
     return sigmoid(z)*(1 - sigmoid(z))
 
 """
@@ -88,21 +127,24 @@ Network:
 """
 input_data = [[[1], [1]],[[1], [1]]]
 output_data = [[1]]
-net: Network = Network()
-net.set_input(input_data)
+net = Network()
+
 single_inp = np.array(input_data[0])
-predicted_out = net.feed_forward(single_inp)
+
+net.backprogagation(single_inp)
+# net.set_input(input_data)
+# predicted_out = net.feed_forward(single_inp)
 # output error -> deltaC * deltaActivation
 # derivate for a quadratic cost function => (predicted - actual)
 # sigma_prime(last activation)
-cost_delta = np.subtract(predicted_out, output_data)
-output_error = cost_delta * sigma_derivative(net.activation_list[-1])
-print(output_error)
+# cost_delta = np.subtract(predicted_out, output_data)
+# output_error = cost_delta * sigmoid_derivative(net.activation_list[-1])
+# print(output_error)
 # Now backprogogate the error
 # value for each weight
 # error = weight_plus_l(transpose) * error_plus_1 (hadmard) sigma_derivative_of_z_of_l
 
-delta_error = output_error
-for i in range(len(net.weights), 0, -1):
-    delta_error = np.dot(net.weights[i - 1].transpose(), delta_error) * sigma_derivative(net.activation_list[i - 2])
-    print("Output error in layer {} : input neurons {}, {}".format((i - 1), net.weights[i - 1].shape[1], delta_error))
+# delta_error = output_error
+# for i in range(len(net.weights), 0, -1):
+#     delta_error = np.dot(net.weights[i - 1].transpose(), delta_error) * sigmoid_derivative(net.activation_list[i - 2])
+#     print("Output error in layer {} : input neurons {}, {}".format((i - 1), net.weights[i - 1].shape[1], delta_error))
