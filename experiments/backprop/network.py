@@ -68,15 +68,9 @@ class Network:
 
         :return:
         """
-        for w in self.weights:
-            print(w.shape)
-
         # x = [[1], [1]]
         delta_b, delta_w = self.backprogagation(input, output)
 
-        for w in delta_w:
-            print(w.shape)
-        print("-----------------")
 
         self.weights, self.biases = self.optimizer_fn.get_gradient(self.weights, delta_w, self.biases, delta_b)
         # print(self.weights, self.biases)
@@ -96,7 +90,6 @@ class Network:
         pred_output = self.feed_forward(x)
         # output error: cost_function_derivative * change in final activation
 
-        print(pred_output, output)
         loss_val = self.loss_fn.calculate(pred_output, output)
         # print(loss_val)
         self.loss_list.append(loss_val)
@@ -104,19 +97,20 @@ class Network:
         delta_c_output = self.loss_fn.derivative(pred_output, output)
 
         # calculating error on the last layer
-        output_error = delta_c_output * self.activation_fn.derivative(self.activation_list[-1])
+        output_error = delta_c_output * self.activation_fn.derivative(self.zs[-1])
 
         delta_error = output_error
 
-        delta_cw_list = []
-        delta_b_list = []
+        delta_cw_list = [np.dot(delta_error, self.activation_list[-1].transpose())]
+        delta_b_list = [delta_error]
 
         # Calculate error for each layer
         for i in range(len(self.weights), 0, -1): # going from last to the first layer
-
+            # print(i - 1)
             delta_error = np.dot(self.weights[i - 1].transpose(), delta_error) * sigmoid_derivative(self.zs[i - 2])
 
-            delta_c_w = np.multiply(self.activation_list[i - 2], delta_error)
+            delta_c_w = np.dot(delta_error,  self.activation_list[i - 1].transpose())
+            # print(delta_c_w)
             delta_bw = delta_error
 
             delta_cw_list.append(delta_c_w)
@@ -124,7 +118,6 @@ class Network:
 
         # delta_c_w = activaction * error
         # delta_c_b = error
-        # print(delta_c_w)
         return delta_b_list, delta_cw_list
 
 
