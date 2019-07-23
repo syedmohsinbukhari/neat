@@ -75,7 +75,6 @@ class Network:
         self.weights, self.biases = self.optimizer_fn.get_gradient(self.weights, delta_w, self.biases, delta_b)
         # print(self.weights, self.biases)
 
-
     def backprogagation(self, x, output):
         """
         Backpropagate the error
@@ -97,20 +96,22 @@ class Network:
         delta_c_output = self.loss_fn.derivative(pred_output, output)
 
         # calculating error on the last layer
+        # change in loss over activation value multiplied by the activation
+        # function (sigmoid e.g.) derivative
+        # equation 1
         output_error = delta_c_output * self.activation_fn.derivative(self.zs[-1])
 
         delta_error = output_error
 
-        delta_cw_list = [np.dot(delta_error, self.activation_list[-1].transpose())]
-        delta_b_list = [delta_error]
+        # setting weights for the previous layer
+        delta_cw_list = []
+        delta_b_list = []
 
         # Calculate error for each layer
-        for i in range(len(self.weights), 0, -1): # going from last to the first layer
-            # print(i - 1)
-            delta_error = np.dot(self.weights[i - 1].transpose(), delta_error) * sigmoid_derivative(self.zs[i - 2])
+        for i in range(len(self.layers) - 1, 0, -1): # going from last to the first layer
+            delta_error = np.dot(self.weights[i - 1].T, delta_error) * sigmoid_derivative(self.zs[i - 2])
 
             delta_c_w = np.dot(delta_error,  self.activation_list[i - 1].transpose())
-            # print(delta_c_w)
             delta_bw = delta_error
 
             delta_cw_list.append(delta_c_w)
@@ -130,7 +131,7 @@ def sigmoid(x):
 
     Returns:
     """
-    return 1/(1 + np.exp(-x))
+    return 1.0/(1.0 + np.exp(-1.0*x))
 
 
 def sigmoid_derivative(z):
@@ -156,18 +157,15 @@ output_data = [[1]]
 net = Network(activation="sigmoid")
 
 
-input = [ [[1], [1]] ,   [[1], [2]] ]
+input = np.array([ [[1], [1]] ,   [[1], [2]] ])
 output = [ [[2]] , [[3]] ]
 for i in range(len(output)):
     net.gradient_descent(input[i], output[i])
 
 loss_rate = net.loss_list
-print("-------------------------------")
 
 for i in loss_rate:
     print(i)
-    print("....")
-
 # net.set_input(input_data)
 # predicted_out = net.feed_forward(single_inp)
 # output error -> deltaC * deltaActivation
