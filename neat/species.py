@@ -2,7 +2,7 @@
 Description: Genomes classes
 author: syedmohsinbukhari@googlemail.com
 """
-from neat.genomes import Genome
+from .genomes import Genome
 
 
 class Species:
