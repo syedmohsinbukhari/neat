@@ -2,12 +2,18 @@
 Description: Genomes classes
 author: syedmohsinbukhari@googlemail.com
 """
+from .genes import Node, Connection
 
 
 class Genome:
-    def __init__(self):
-        self.nodes = []
-        self.connections = []
+    def __init__(self, nodes, connections):
+        assert type(nodes) is list
+        assert type(connections) is list
+        assert all(isinstance(node, Node) for node in nodes)
+        assert all(isinstance(conn, Connection) for conn in connections)
+
+        self.nodes = nodes
+        self.connections = connections
 
     def get_node_count(self):
         """
@@ -32,5 +38,5 @@ class Genome:
         """
         assert type(inp) is list
 
-        # TODO
+        # TODO: Correct implementation of compute
         return self.get_connection_count() + self.get_node_count()

@@ -10,6 +10,8 @@
 - Get Number of Input Connections
 - Get Number of Output Connections
 - Get Number of Total Connections
+- Set Incoming Connections
+- Set Outgoing Connections
 ---
 ### Connection Class
 #### Attributes
@@ -35,7 +37,7 @@
 #### Attributes
 - Genome Objects Array
 #### Methods
-- Get Specie Population
+- Get Species Population
 ---
 ### Mutation Class
 #### Methods
@@ -62,4 +64,13 @@
 ### Helper Class
 #### Methods
 - Align Genes
+---
+### Neat Class
+#### Attributes
+- All Species in Generation
+- All Nodes
+- All Connections
+#### Methods
+- Generate Node
+- Generate Connection
 ---
