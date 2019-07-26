@@ -11,7 +11,6 @@ init:
 	pip install -r requirements.txt
 
 test:
-	clean-pyc
 	py.test . --cov=.
 	coveralls
 
