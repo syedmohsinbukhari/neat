@@ -7,11 +7,10 @@ from neat.genomes import Genome
 
 
 class TestGenome:
+    """Class to test Genome Class"""
 
     def setup(self):
-        """
-        Setup for testing genome object.
-        """
+        """Setup for testing genome object."""
         self.in_node = Node(0)
         self.out_node = Node(1)
 
@@ -26,15 +25,11 @@ class TestGenome:
         self.genome = Genome([self.in_node, self.out_node], [self.conn])
 
     def test_get_node_count(self):
-        """
-        Test get_node_count method of Genome
-        """
+        """Test get_node_count method of Genome"""
         assert self.genome.get_node_count() == 2
 
     def test_get_connection_count(self):
-        """
-        Test get_connection_count method of Genome
-        """
+        """Test get_connection_count method of Genome"""
         assert self.genome.get_connection_count() == 1
 
     # TODO: test case for compute function of Genome class

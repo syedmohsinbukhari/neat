@@ -8,11 +8,11 @@ from neat.species import Species
 
 
 class TestSpecies:
+    """Class to test Species Class"""
 
     def setup(self):
-        """
-        Setup for testing Species class
-        """
+        """Setup for testing Species class"""
+
         self.in_node = Node(0)
         self.out_node = Node(1)
 
@@ -29,9 +29,8 @@ class TestSpecies:
         self.species = Species([])
 
     def test_get_species_population(self):
-        """
-        Test get_species_population method of Species
-        """
+        """Test get_species_population method of Species"""
+
         self.species = Species([])
         assert self.species.get_species_population() == 0
 
@@ -42,9 +41,8 @@ class TestSpecies:
         assert self.species.get_species_population() == 2
 
     def test_set_genomes(self):
-        """
-        Test set_genomes method of Species
-        """
+        """Test set_genomes method of Species"""
+
         self.species.set_genomes([])
         assert self.species.get_species_population() == 0
 
@@ -52,9 +50,8 @@ class TestSpecies:
         assert self.species.get_species_population() == 1
 
     def test_add_genome(self):
-        """
-        Test add_genome method of Species
-        """
+        """Test add_genome method of Species"""
+
         self.species = Species([])
         assert self.species.get_species_population() == 0
 

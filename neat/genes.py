@@ -5,10 +5,10 @@ author: syedmohsinbukhari@googlemail.com
 
 
 class Connection:
+    """This class models Connection Genes."""
 
     def __init__(self, in_node, out_node, weight, is_enabled, innovation_number):
-        """
-        Generates a connection object.
+        """Generates a connection object.
 
         Args:
             in_node: The node from which the connection is initiated
@@ -30,23 +30,19 @@ class Connection:
         self.innov = innovation_number
 
     def enable(self):
-        """
-        Enable the connection
-        """
+        """Enable the connection"""
         self.enabled = True
 
     def disable(self):
-        """
-        Disable the connection
-        """
+        """Disable the connection"""
         self.enabled = False
 
 
 class Node:
+    """This class models Node Genes."""
 
     def __init__(self, node_number):
-        """
-        Generate a Node object with a given node_number.
+        """Generate a Node object with a given node_number.
 
         Args:
             node_number: Node number to assign to the node being generated.
@@ -57,26 +53,20 @@ class Node:
         self.out_connections = []
 
     def get_num_in_conns(self):
-        """
-        Returns the number of IN connections to this node
-        """
+        """Returns the number of IN connections to this node"""
         return len(self.in_connections)
 
     def get_num_out_conns(self):
-        """
-        Returns the number of OUT connections from this node
-        """
+        """Returns the number of OUT connections from this node"""
         return len(self.out_connections)
 
     def get_num_total_conns(self):
-        """
-        Returns the number of total connections to and from this node
-        """
+        """Returns the number of total connections to and from this node"""
         return self.get_num_in_conns() + self.get_num_out_conns()
 
     def set_in_connections(self, in_connections):
-        """
-        Sets the incoming connections to this node.
+        """Sets the incoming connections to this node.
+
         Args:
             in_connections: a list containing incoming connections to this node
         """
@@ -86,8 +76,8 @@ class Node:
         self.in_connections = in_connections
 
     def set_out_connections(self, out_connections):
-        """
-        Sets the incoming connections to this node.
+        """Sets the incoming connections to this node.
+
         Args:
             out_connections: a list containing outgoing connections to this node
         """

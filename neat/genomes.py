@@ -6,9 +6,10 @@ from .genes import Node, Connection
 
 
 class Genome:
+    """This class models genomes"""
+
     def __init__(self, nodes, connections):
-        """
-        Generate a Genome object.
+        """Generate a Genome object.
 
         Args:
             nodes: An array of nodes to initialize the genome with.
@@ -23,22 +24,23 @@ class Genome:
         self.connections = connections
 
     def get_node_count(self):
-        """
+        """Gets number of nodes in the genome
+
         Returns:
             Number of nodes in the genome
         """
         return len(self.nodes)
 
     def get_connection_count(self):
-        """
+        """Gets number of connections in the genome
+
         Returns:
             Number of connections in the genome
         """
         return len(self.connections)
 
     def compute(self, inp):
-        """
-        Computes output of the Neural Network encoded by this genome
+        """Computes output of the Neural Network encoded by this genome
 
         Args:
             inp: a list of input numbers.
