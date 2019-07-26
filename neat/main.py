@@ -7,12 +7,11 @@ import numpy as np
 
 def main(test_argument):
     """
-    To test the documentation
-    Args:
-        test_argument:
+    This function is to test the documentation
 
-    Returns:
 
+    :param test_argument: A variable which contains a string value
+    return: does not return anything
     """
     product = np.multiply([[1]],[[1]])
     print(test_argument, product)
