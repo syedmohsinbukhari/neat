@@ -6,6 +6,11 @@
 Welcome to Neat's documentation!
 ================================
 
+Implementation of :`NEAT (NeuroEvolution of Augmenting Topologies)` in Python3.
+
+.. note::
+   It is inspired by work of CodeReclaimers work on `NEAT <https://neat-python.readthedocs.io>`_
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
