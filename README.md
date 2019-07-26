@@ -21,6 +21,10 @@ Evolving Neural Networks through Augmenting Topologies by Kenneth O. Stanley and
 - [Structuring Python Projects](https://docs.python-guide.org/writing/structure/)
 - [Neat Python](https://github.com/CodeReclaimers/neat-python) for reference
 
+- _Class Design_
+- https://softwareengineering.stackexchange.com/questions/395196/object-oriented-design-genome-class-mutation-class
+![image](https://user-images.githubusercontent.com/7658188/61931139-48ef2500-af99-11e9-88fc-aefadde0fd68.png)
+
 **To Do**
 
 - [x] Genetic algos
@@ -38,6 +42,9 @@ Evolving Neural Networks through Augmenting Topologies by Kenneth O. Stanley and
 - Compute Fitness
 
 
+**Documentation Setup**
+- `pip install Sphinx`
+- in docs folder `sphinx-quickstart`
 
 ### Contributors
 [Syed Mohsin Bukhari](https://github.com/syedmohsinbukhari)<br>
