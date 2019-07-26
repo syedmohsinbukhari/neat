@@ -1,9 +1,9 @@
 import pytest
 import numpy as np
 
-from optimizers import SGD
-from activations import Activation
-from losses import MSE
+from .optimizers import SGD
+from .activations import Activation
+from .losses import MSE
 
 
 def test_sgd():
