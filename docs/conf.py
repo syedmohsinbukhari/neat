@@ -12,14 +12,14 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../neat/'))
+sys.path.insert(0, os.path.abspath('../../neat/'))
 
 
 # -- Project information -----------------------------------------------------
 
 project = 'Neat'
-copyright = '2019, elcid@github.com, bazarovay@github.com'
-author = 'elcid@github.com, bazarovay@github.com'
+copyright = '2019, TheLeagueOfDisappointingGentlemen'
+author = 'elcid,bazarovay'
 
 # The full version, including alpha/beta/rc tags
 release = '1.0.0-beta'
