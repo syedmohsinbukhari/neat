@@ -48,5 +48,5 @@ Evolving Neural Networks through Augmenting Topologies by Kenneth O. Stanley and
 - in docs folder `sphinx-quickstart`
 
 ### Contributors
-[El Cid](https://github.com/syedmohsinbukhari)<br>
+[ElCid](https://github.com/syedmohsinbukhari)<br>
 [Bazarovay](https://github.com/bazarovay)
