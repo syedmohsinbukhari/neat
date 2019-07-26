@@ -10,12 +10,11 @@ class Connection:
     def __init__(self, in_node, out_node, weight, is_enabled, innovation_number):
         """Generate a connection object.
 
-        Args:
-            in_node: The node from which the connection is initiated
-            out_node: The node to which the connection goes
-            weight: Weight of the connection
-            is_enabled: Whether the connection is enabled or not
-            innovation_number: Innovation number of the connection
+        :param in_node: The node from which the connection is initiated
+        :param out_node: The node to which the connection goes
+        :param weight: Weight of the connection
+        :param is_enabled: Whether the connection is enabled or not
+        :param innovation_number: Innovation number of the connection
         """
         assert isinstance(in_node, Node)
         assert isinstance(out_node, Node)
@@ -51,7 +50,6 @@ class Node:
         self.in_connections = []
         self.out_connections = []
 
-        """"""
     def get_num_in_conns(self):
         """Return the number of IN connections to this node.
 
