@@ -4,7 +4,12 @@
 ### Node Class
 #### Attributes
 - Node Number
-- Connection Objects Array
+- Input Connections
+- Output Connections
+#### Methods
+- Get Number of Input Connections
+- Get Number of Output Connections
+- Get Number of Total Connections
 ---
 ### Connection Class
 #### Attributes
@@ -13,6 +18,9 @@
 - Weight
 - Enabled
 - Innovation Number
+#### Methods
+- Enable
+- Disable
 ---
 ### Genome Class
 #### Attributes
@@ -21,10 +29,13 @@
 #### Methods
 - Get Number Of Nodes
 - Get Number Of Connections
+- Compute Output From Input
 ---
 ### Species Class
 #### Attributes
 - Genome Objects Array
+#### Methods
+- Get Specie Population
 ---
 ### Mutation Class
 #### Methods
