@@ -8,7 +8,7 @@ class Connection:
     """This class models Connection Genes."""
 
     def __init__(self, in_node, out_node, weight, is_enabled, innovation_number):
-        """Generates a connection object.
+        """Generate a connection object.
 
         Args:
             in_node: The node from which the connection is initiated
@@ -42,33 +42,41 @@ class Node:
     """This class models Node Genes."""
 
     def __init__(self, node_number):
-        """Generate a Node object with a given node_number.
+        """Generates a Node object with a given node_number.
 
-        Args:
-            node_number: Node number to assign to the node being generated.
+        :param node_number: Node number to assign to the node being generated.
         """
         assert type(node_number) is int
         self.number = node_number
         self.in_connections = []
         self.out_connections = []
 
+        """"""
     def get_num_in_conns(self):
-        """Returns the number of IN connections to this node"""
+        """Return the number of IN connections to this node.
+
+        :return: number of IN connections to this node.
+        """
         return len(self.in_connections)
 
     def get_num_out_conns(self):
-        """Returns the number of OUT connections from this node"""
+        """Return the number of OUT connections from this node.
+
+        :return: number of OUT connections from this node.
+        """
         return len(self.out_connections)
 
     def get_num_total_conns(self):
-        """Returns the number of total connections to and from this node"""
+        """Return the number of total connections to and from this node.
+
+        :return: total number of connections.
+        """
         return self.get_num_in_conns() + self.get_num_out_conns()
 
     def set_in_connections(self, in_connections):
         """Sets the incoming connections to this node.
 
-        Args:
-            in_connections: a list containing incoming connections to this node
+        :param in_connections: a list containing incoming connections to this node
         """
         assert type(in_connections) is list
         assert all(isinstance(conn, Connection) for conn in in_connections)
@@ -78,8 +86,7 @@ class Node:
     def set_out_connections(self, out_connections):
         """Sets the incoming connections to this node.
 
-        Args:
-            out_connections: a list containing outgoing connections to this node
+        :param out_connections: a list containing outgoing connections to this node
         """
         assert type(out_connections) is list
         assert all(isinstance(conn, Connection) for conn in out_connections)
