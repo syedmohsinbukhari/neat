@@ -7,6 +7,13 @@ from .genes import Node, Connection
 
 class Genome:
     def __init__(self, nodes, connections):
+        """
+        Generate a Genome object.
+
+        Args:
+            nodes: An array of nodes to initialize the genome with.
+            connections: An array of connections to initialize the genome with.
+        """
         assert type(nodes) is list
         assert type(connections) is list
         assert all(isinstance(node, Node) for node in nodes)
