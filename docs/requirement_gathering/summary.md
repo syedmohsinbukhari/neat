@@ -1,0 +1,177 @@
+### Paper Summary
+
+_The first part was on hard copy, have to add it here_
+
+_Points to discuss_
+- Offspring number for each species
+- Crossover and replacing with offsprings
+
+_Requirements_
+- 
+##### Competing Conventions Problem
+
+- aka Permutations Problem
+- When the same solution can be represented in different ways
+- When not the same encoding, crossover can produce damaged offspring
+- ABC can be rep in 3! 6 ways
+- When ABC | CBC crossover -> CBC. Critical information lost
+- Further complicated with _differing convention_
+    - DBE, ABC | B interdependency
+- More difficult in TWEANN because
+    - similar solutions totally different topolgies
+    - genomes of different sizes
+- Since no constraint over topologies produced fixed topology solutions dont work
+- PDGP assumes subnet represent functional unit that can be recombined
+    - but different topologies may not be based on the same network
+- Main intution behind NEAT from problem
+    - **Structure representations will not always match up**
+        - Genomes can have different sizes
+        - Genes in the same position might express different traits
+        - Genes may appear at different position for different chromosomes
+    - Similar to gene alighment problem in nature
+    - Genomes are not fixed len either
+    - Through gene amplification, genes added to genomes
+    - Genes cant just randomly insert
+    - To keep crossover orderly, right genes need to be crossed
+    - Nature's solution is _homology_
+    - 2 genes are homologous if alleles of the same trait
+    - Homology can't be determined from structure
+    - Historical origin can be used to determine homology
+    - NEAT performs artificial synapsis add new structures without losing track
+    
+##### Speciation Problem
+
+- Innovation through adding new structures
+- This can however reduce the performance initially
+- Need a few generations to optimize
+- GNARL adds nonfunctional structure to address this problem
+- however it might never connect to the functional units
+- Nature: niching. Different structure, different specie
+- If networks isolated into their own species, they won't have to compete with others
+- Speciation commonly applied to multi-modal functions, cooperative coevolution of modular systems
+- It requires a compatibility function to find similar species
+- Not used in neuroevolution because difficult to formulate
+- Competing Conventions make it harder since same function rep with diff network structure
+- NEAT solves that so can formulate it
+- **Explicit Fitness Sharing** is used
+    - individuals with similar genomes share their fitness payoff
+- Original implicit fitness used performance similarity instead of genetic similarity
+- Result of sharing fitness is that the number of networks that can exist on single fitness peak is limited by the size of the peak
+- Population divides on different peaks without the threat of one specie taking over
+- In NEAT similarity can be measured easily so explicit fitness sharing well-suited
+- Explicit fitness sharing: http://www.cs.bham.ac.uk/~axk/lect10.pdf
+    - Share the fitness score with other similar network
+    - Lower overall score
+        
+#### Initial Population
+- Many TWEANNs have initial random population
+- Gives diversity, however sometimes can produce networks with not all connections to the output
+- Can take time to weed these out
+- Also, if we start with some random structure we are nodes which haven't proven themselves
+- As the network is only going to grow, nothing is going to remove these unnecessary nodes
+- One way is to add network size to the fitness function
+- That's adhoc, unexpected consequences
+- Different problems require different complexity
+- Start with minimal population and structure
+    - If no hidden nodes and grows structure only when beneficial
+    - then no need to penalize network size
+- **NEAT Design principle : start with minimal population and structure**
+- This makes sure
+    - Searches in the lowest-dim weight space over all gens
+    - Minimizes search space, increases performance
+- Other TWEANNs start with random pop for diversity later
+    - Otherwise innovations won't survive
+- Because of speciation NEAT does not need that
+   
+   
+#### NEAT
+- _Extract requirements_
+
+- **Genetic Encoding**
+    - Genomes are linear representation of network connectivity
+    - Each genome has
+        - A list of connection genes
+            - Each refers to 2 genes
+            - In node
+            - Out node
+            - Weight of the connection
+            - Enable bit
+            - Innovation number (to find correspodning genes)
+        - Node Genes (provide:)
+            - List of inputs
+            - Hidden nodes
+            - Outputs
+    - Mutation
+        - can change
+            - connection weights
+                - Either perturbed or not
+            - network structures
+                - Structural mutation in 2 ways
+                    - Add connection (expand genome size)
+                        - single new connection gene with random weight
+                    - Add node
+                        - Existing connection is split
+                        - New node placed where the old conn used to be
+                        - Old conn disabled
+                        - 2 new connected added to the genome
+                        - Connection leading into the new node has a weight of 1
+                        - Connection leading out the new node same wgt as old
+            - Minimizes initial effect of mutation
+            - New nonlinearity changes the function but can be integrated immediately
+            - Thru mutation the size will increase
+            - How to manage it? Crossing over differently sized networks?
+    - Tracking Genes
+        - Historical origin of genes used to line them up
+        - Requires little computation
+        - Global innovation number is incremented whenever a new gene created
+        - Represents chronology of gene creation
+        - Innovation number is added whenever a new gene added (add node, add connection)
+        - Add Connection: old conn disabled. old to new node -> inno+1 | new node to old -> inno+2
+        - Whenever these genomes mate, offsprings will have the same innNumber
+        - Same innovations happening again could get diff innovation number
+        - Keep a check on all the innovations done to keep this under control
+        - **Cross Over**
+            - Genes with the same innovation number in parents aligned
+            - Called matching genes
+            - Disjoint/Excess genes if they don't match
+                - Depending on whether in or outside the range of other parents
+                - (?) Excess if outside the range, disjoint if inside
+            - Disjoint genes from the more fit parent
+            - Matching genes randomly chosen
+        - No need for expensive topological analysis
+        - Smaller structures optimize faster than larger
+        - So the new structures won't survive the first generation
+        - Using speciation we are able to protect
+    - Speciation
+        - Organisms to compete with their niches
+        - Optimize the structure by competing within their niche
+        - Use historical marking to match organisms
+        - No. of excess/disjoint used to measure compatiability
+            - distance = c1*E/N + c2*D/N + c3*W_avg
+            - E -> Excess genes, D -> Disjoind genes
+            - N # of genes, can be 1 if both genomes < 20 genes
+            - W_avg -> avg wgt diff of matching genes
+            - c1,c2,c3 are constants to control importance of these factors
+        - Distance measure with compatability threshold
+        - Ordered list of species is maintained
+        - Each generation, geneomes sequentially placed into species
+        - Specie rep by a random genome from the prev generation
+        - Current genome in current added to specie if compatible
+        - If no compatibility, create new specie
+        - **Explicit Fitness Sharing**
+            - Same specie org share the fitness of their niche
+            - Species can't become too big even if perform well
+            - Adjusted fitness fo an org is:
+                adj_fit_i = fit/( Sum over (from j:1 to n) sh(distaince(i,j)))
+            - sharing function sh 0 if abv threshold (not specie), 1 otherwise
+            - Sum is thus the number of org in the same species
+            - Every species diff # of offsprings in prop to sum of adj_fit
+            - Reproduce by removing low performing members
+            - Entire pop replaced by the offspr of the rem org
+            - If no improvement over 20 gens, use only top 2 species
+    - Minimizing Dim thru Incremental Growth
+        - TWEANNs typically nit pop of rand topologies
+        - NEAT uniform pop with zero hidden nodes
+        - New struct added incrementally and are always justified
+        - Thus search space dimensionality is minimized
+        - Performance advantage
