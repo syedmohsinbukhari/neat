@@ -1,5 +1,13 @@
+### Paper Summary
+
 _The first part was on hard copy, have to add it here_
 
+_Points to discuss_
+- Offspring number for each species
+- Crossover and replacing with offsprings
+
+_Requirements_
+- 
 ##### Competing Conventions Problem
 
 - aka Permutations Problem
